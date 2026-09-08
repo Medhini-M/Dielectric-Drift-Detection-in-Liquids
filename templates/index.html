@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sensor Monitoring Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+    <h1>SENSOR MONITORING DASHBOARD</h1>
+    <div class="topbar-controls">
+        <div class="mode-selector">
+            <button id="btn-demo" class="mode-btn active">DEMO MODE</button>
+            <button id="btn-live" class="mode-btn">LIVE MODE</button>
+        </div>
+        <div class="system-status">
+            <span class="status-dot online"></span>
+            <span id="system-status-text">SYSTEM: ONLINE</span>
+        </div>
+    </div>
+</header>
+
+<main>
+
+    <!-- Demo scenario control, hidden in LIVE mode -->
+    <section id="demo-controls" class="card demo-controls">
+        <label for="scenario-select">Demo Scenario:</label>
+        <select id="scenario-select">
+            <option value="NORMAL">Normal</option>
+            <option value="DEGRADED">Degraded</option>
+            <option value="SUBSTITUTED">Substituted</option>
+            <option value="INSUFFICIENT_EVIDENCE">Insufficient Evidence</option>
+        </select>
+        <button id="btn-apply-scenario">Apply</button>
+        <span id="scenario-feedback" class="scenario-feedback"></span>
+    </section>
+
+    <!-- Live-mode waiting state -->
+    <section id="live-waiting" class="card live-waiting hidden">
+        <div class="live-waiting-inner">
+            <div class="pulse-dot"></div>
+            <div>
+                <div class="live-waiting-title">LIVE MODE</div>
+                <div class="live-waiting-subtitle">Waiting for sensor data...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value cards -->
+    <section id="value-cards" class="value-cards">
+        <div class="value-card">
+            <div class="value-label">AMPLITUDE</div>
+            <div class="value-number" id="val-amplitude">-- dB</div>
+        </div>
+        <div class="value-card">
+            <div class="value-label">PHASE</div>
+            <div class="value-number" id="val-phase">--°</div>
+        </div>
+        <div class="value-card">
+            <div class="value-label">RESIDUAL</div>
+            <div class="value-number" id="val-residual">--</div>
+        </div>
+        <div class="value-card">
+            <div class="value-label">TEMP</div>
+            <div class="value-number" id="val-temp">--°C</div>
+        </div>
+    </section>
+
+    <!-- Condition banner -->
+    <section class="card condition-banner-wrap">
+        <div class="condition-banner-label">CURRENT CONDITION</div>
+        <div id="condition-banner" class="condition-banner condition-unknown">--</div>
+    </section>
+
+    <!-- Meta strip -->
+    <section class="card meta-strip">
+        <div class="meta-item">
+            <span class="meta-label">VALIDITY</span>
+            <span id="meta-validity" class="meta-value">--</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">GATE</span>
+            <span id="meta-gate" class="meta-value">--</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">ANTENNA</span>
+            <span id="meta-antenna" class="meta-value">--</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">FREQUENCY</span>
+            <span id="meta-frequency" class="meta-value">--</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">CONTAINER</span>
+            <span id="meta-container" class="meta-value">--</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">TIMESTAMP</span>
+            <span id="meta-timestamp" class="meta-value">--</span>
+        </div>
+    </section>
+
+    <!-- Real-time chart -->
+    <section class="card chart-card">
+        <h2>REAL-TIME SENSOR GRAPH</h2>
+        <canvas id="realtimeChart" height="90"></canvas>
+    </section>
+
+    <!-- Historical chart -->
+    <section class="card chart-card">
+        <h2>HISTORICAL DATA</h2>
+        <div class="history-controls">
+            <label for="history-container">Container:</label>
+            <input type="text" id="history-container" placeholder="e.g. C001">
+            <button id="btn-refresh-history">Refresh</button>
+        </div>
+        <canvas id="historyChart" height="90"></canvas>
+    </section>
+
+    <!-- Rejection stats -->
+    <section class="card chart-card">
+        <h2>REJECTION STATISTICS</h2>
+        <canvas id="rejectionChart" height="90"></canvas>
+    </section>
+
+    <!-- Chain integrity -->
+    <section class="card integrity-card">
+        <span class="meta-label">CHAIN STATUS:</span>
+        <span id="integrity-status" class="integrity-status">UNKNOWN</span>
+    </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
